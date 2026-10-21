@@ -1,0 +1,8 @@
+__pycache__/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+# Data is approved and fetched per project, never committed with the boilerplate.
+pipeline/data_sources/*
+!pipeline/data_sources/.gitkeep
