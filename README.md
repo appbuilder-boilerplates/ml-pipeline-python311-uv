@@ -72,3 +72,10 @@ range); its `requirements-test.txt` needs only `numpy` and `pandas` (what import
 - Prediction features are aligned to the training columns: a category unseen in training is dropped, a missing one is
   0.
 - `UV_PROJECT_ENVIRONMENT=/deps/venv` keeps the venv outside `/workspace` (hidden at runtime by the PVC mount).
+
+## Logging
+
+stdout is the result channel: only the `METRIC_<name>=<value>` lines the platform's training runner reads. Every
+operational log record goes to stderr as one JSON object per line (`pipeline/ml_pipeline/logging_config.py`):
+`timestamp`, `level`, `logger`, `message` and the fields passed with it (`data loaded`, `model trained`, `model scored`
+stage records). Log with `logging.getLogger(__name__)` and `extra={...}`; never print anything but the METRIC lines.

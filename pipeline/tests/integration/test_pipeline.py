@@ -1,4 +1,5 @@
 """The pipeline end to end on real files: load -> encode -> train -> predict -> score -> METRIC lines."""
+import json
 from collections.abc import Callable
 from pathlib import Path
 
@@ -32,7 +33,10 @@ def test_main_reports_each_score_as_a_metric_line(
     monkeypatch.setenv("MODEL_PARAMS_JSON", '{"task": "regression"}')
     monkeypatch.delenv("MODEL_DIR", raising=False)
     main()
-    assert capsys.readouterr().out.splitlines() == ["METRIC_mae=1.0", "METRIC_rmse=1.0"]
+    captured = capsys.readouterr()
+    assert captured.out.splitlines() == ["METRIC_mae=1.0", "METRIC_rmse=1.0"]  # the result channel, unchanged
+    stages = [json.loads(line)["message"] for line in captured.err.splitlines() if line.startswith("{")]
+    assert stages == ["data loaded", "data loaded", "model trained", "model scored"]
 
 
 def test_main_refuses_params_that_are_not_an_object(monkeypatch: pytest.MonkeyPatch) -> None:
