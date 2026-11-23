@@ -15,6 +15,7 @@ dependencies = [
 [dependency-groups]
 # What the test image installs (and nothing else): xgboost and scikit-learn are stubbed in the tests.
 test = [
+    "deptry>=0.25.1,<0.26",
     "joblib>=1.6.0,<2",
     "mypy>=2.4.0,<3",
     "numpy>=2.4.6,<3",
@@ -47,3 +48,13 @@ warn_unused_ignores = true
 # Not installed in the test image (stubbed in the tests) and untyped.
 module = ["xgboost", "xgboost.*", "sklearn", "sklearn.*", "joblib"]
 ignore_missing_imports = true
+
+[tool.deptry.package_module_name_map]
+# The test image installs only the `test` group (xgboost and scikit-learn are stubbed in the tests), so deptry cannot
+# read these packages' module names from installed metadata.
+xgboost-cpu = "xgboost"
+scikit-learn = "sklearn"
+
+[tool.deptry.per_rule_ignores]
+# Declared and never imported: xgboost's scikit-learn API (XGBRegressor / XGBClassifier) needs it at runtime.
+DEP002 = ["scikit-learn"]

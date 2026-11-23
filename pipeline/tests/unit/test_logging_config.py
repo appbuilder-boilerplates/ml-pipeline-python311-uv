@@ -3,6 +3,8 @@ reads, and stays exactly that)."""
 import json
 import logging
 
+import pytest
+
 from ml_pipeline.logging_config import configure_logging
 
 
@@ -10,7 +12,7 @@ def _records(captured: str) -> list[dict]:
     return [json.loads(line) for line in captured.splitlines() if line.strip()]
 
 
-def test_a_record_is_one_json_line_on_stderr_with_its_fields(capsys):
+def test_a_record_is_one_json_line_on_stderr_with_its_fields(capsys: pytest.CaptureFixture[str]) -> None:
     configure_logging("INFO")
 
     logging.getLogger("ml_pipeline.example").info("model trained", extra={"rows": 3, "duration_ms": 5})
@@ -22,7 +24,7 @@ def test_a_record_is_one_json_line_on_stderr_with_its_fields(capsys):
     assert captured.out == ""
 
 
-def test_configuring_twice_writes_each_record_once(capsys):
+def test_configuring_twice_writes_each_record_once(capsys: pytest.CaptureFixture[str]) -> None:
     configure_logging("INFO")
     configure_logging("INFO")
 

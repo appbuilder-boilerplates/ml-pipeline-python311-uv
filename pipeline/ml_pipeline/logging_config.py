@@ -12,6 +12,7 @@ import logging
 import sys
 import traceback
 from datetime import UTC, datetime
+from typing import TextIO
 
 _STANDARD_ATTRIBUTES = frozenset(logging.LogRecord("", 0, "", 0, "", None, None).__dict__) | {"message", "asctime"}
 
@@ -39,12 +40,12 @@ class _StderrHandler(logging.StreamHandler):
     def __init__(self) -> None:
         super().__init__(sys.stderr)
 
-    @property  # type: ignore[override]
-    def stream(self):  # noqa: D401 -- logging's own attribute
+    @property
+    def stream(self) -> TextIO:  # noqa: D401 -- logging's own attribute
         return sys.stderr
 
     @stream.setter
-    def stream(self, _value) -> None:
+    def stream(self, _value: TextIO) -> None:
         pass
 
 
