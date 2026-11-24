@@ -76,6 +76,10 @@ range); its `requirements-test.txt` needs only `numpy` and `pandas` (what import
 ## Logging
 
 stdout is the result channel: only the `METRIC_<name>=<value>` lines the platform's training runner reads. Every
-operational log record goes to stderr as one JSON object per line (`pipeline/ml_pipeline/logging_config.py`):
+operational log record goes to stderr as one JSON object per line (`pipeline/ml_pipeline/core/logging_config.py`):
 `timestamp`, `level`, `logger`, `message` and the fields passed with it (`data loaded`, `model trained`, `model scored`
 stage records). Log with `logging.getLogger(__name__)` and `extra={...}`; never print anything but the METRIC lines.
+
+## Shared code (`pipeline/ml_pipeline/core/`)
+
+Code more than one feature uses lives in `pipeline/ml_pipeline/core/`, organised by concern: it goes into the module for its concern, or a new module or folder there when none fits -- never one function per file, and never inside one feature's own files. The platform reads this location from the catalogue (`shared_paths`).

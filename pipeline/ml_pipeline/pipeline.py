@@ -8,8 +8,8 @@ import os
 import time
 from typing import Any
 
+from .core.logging_config import configure_logging
 from .data import load_data
-from .logging_config import configure_logging
 from .metrics import score
 from .model import predict, save_model, train
 

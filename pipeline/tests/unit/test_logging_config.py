@@ -5,7 +5,7 @@ import logging
 
 import pytest
 
-from ml_pipeline.logging_config import configure_logging
+from ml_pipeline.core.logging_config import configure_logging
 
 
 def _records(captured: str) -> list[dict]:
