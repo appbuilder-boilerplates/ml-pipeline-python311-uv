@@ -22,6 +22,7 @@ test = [
     "pandas>=3.0.6,<4",
     "pandas-stubs>=3.0.5,<4",
     "pytest>=9.1.1,<10",
+    "pytest-xdist>=3.8,<4",
     "ruff>=0.17.1,<0.18",
 ]
 
